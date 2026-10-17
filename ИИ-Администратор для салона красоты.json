@@ -1,0 +1,946 @@
+{
+  "name": "ИИ-Администратор для салона красоты",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -192,
+        304
+      ],
+      "id": "9adaea05-4977-4dfc-bc0e-b4a1a04396ad",
+      "name": "Telegram Trigger",
+      "webhookId": "98401b37-1abb-4e69-9406-618c7fd03036",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "92a89889-5525-44e6-9a84-633aad69a580"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "710933dc-78cb-4f65-a4ce-028246546fe9",
+                    "leftValue": "={{ $json.message.photo }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "array",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "photo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "751af67e-309f-4c10-89d0-b7f7e9d8531f",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        288
+      ],
+      "id": "50a835ce-faf7-42e8-8ebf-53a50551dd97",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/index",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    },
+                    "id": "d6bb193d-d193-4379-bf39-84672162d137"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "index"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "b84fae69-8260-4c32-bc7f-1327c0902816",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/stats",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "stats"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4661885a-f2e4-4679-b935-a8060147758d",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/clear",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "clear"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        544
+      ],
+      "id": "fb07a99a-94e8-403b-a11c-e7764622770b",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/Users//yuliya_pererva/.n8n-files/*.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        560
+      ],
+      "id": "37f1f4c5-8753-4b5e-97a5-c72e31364f78",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "memoryKey": {
+          "__rl": true,
+          "value": "salon_kb",
+          "mode": "id"
+        },
+        "clearStore": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        912,
+        448
+      ],
+      "id": "a4c12a30-b85e-437b-a620-b07a21bc47d2",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "model": "=openai/text-embedding-3-small",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        688
+      ],
+      "id": "b4c55223-789c-448b-beeb-809eefd2ad0e",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1056,
+        688
+      ],
+      "id": "a69f0391-7c1b-49de-b48c-ec86b51a8201",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ База знаний загружена. Фрагментов: {{ $input.all().length }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1328,
+        560
+      ],
+      "id": "bcaff392-47d1-4765-b47e-15ffc1e57297",
+      "name": "Send a text message",
+      "webhookId": "d8aa5592-5f3d-4e53-ad3d-0bd2e1dfb78a",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "memoryKey": {
+          "__rl": true,
+          "value": "salon_kb",
+          "mode": "list",
+          "cachedResultName": "salon_kb"
+        },
+        "prompt": "прайс",
+        "topK": 100
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        1280
+      ],
+      "id": "74b1b56a-1c7a-48c6-9ad4-db757e1adf29",
+      "name": "Simple Vector Store1"
+    },
+    {
+      "parameters": {
+        "model": "=openai/text-embedding-3-small",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        1536
+      ],
+      "id": "3546b7f7-b003-4590-99d7-ab5776bac481",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=📊 В базе знаний фрагментов: {{ $input.all().length }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        768,
+        1280
+      ],
+      "id": "a853c981-e2eb-4b04-80b5-ece253409080",
+      "name": "Send a text message1",
+      "webhookId": "1162bccb-8e7b-4fd2-8065-b2a839810ef8",
+      "executeOnce": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message?.text || $json.text }}",
+        "options": {
+          "systemMessage": "Ты — ИИ-администратор салона красоты. Отвечай вежливо и коротко, на «вы». Про услуги, цены и правила салона всегда сначала ищи информацию в инструменте salon_kb и отвечай только по найденному, цены не выдумывай. Если информации нет, скажи, что уточнишь у администратора. Медицинских советов не давай. Записи пока не оформляешь, предложи передать запрос администратору. В конце ответа добавляй строку «Источник: …» с названием раздела из найденного фрагмента, например «Маникюр» или «Информация о салоне» Если в базе нет нужной информации или это приветствие и общий разговор, не указывай источник и не ищи в базе без необходимости. Строку «Источник» добавляй только когда ответ прямо взят из найденного фрагмента. Говори о себе в женском роде: «не нашла», «уточню»"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        864,
+        -160
+      ],
+      "id": "95df353f-83da-42fb-9ded-468f30ce3685",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "id"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        80
+      ],
+      "id": "10d52ebb-91a2-4036-ad78-1bee97a00f47",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Прайс-лист и информация салона",
+        "memoryKey": {
+          "__rl": true,
+          "value": "salon_kb",
+          "mode": "list",
+          "cachedResultName": "salon_kb"
+        },
+        "topK": 3
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        80
+      ],
+      "id": "5c3f8f23-e590-4ce9-85ab-b0ebd1cf6709",
+      "name": "Simple Vector Store2"
+    },
+    {
+      "parameters": {
+        "model": "=openai/text-embedding-3-small",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1296,
+        272
+      ],
+      "id": "f1a26593-5b3f-4c0e-888d-fb94328b44b9",
+      "name": "Embeddings OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1392,
+        -160
+      ],
+      "id": "a988111c-9423-48e7-be36-0e36325db363",
+      "name": "Send a text message2",
+      "webhookId": "50a42878-c422-4468-abbf-9a45befc6311",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "e1d339a1-a6e1-472b-b57e-3c7e77902d21",
+      "name": "Get a file",
+      "webhookId": "0670d896-7186-44de-b5df-2a7f91b6f570",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        544,
+        -16
+      ],
+      "id": "ed66f6d0-44d2-46b2-a40f-6935108fb8ac",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.photo.last().file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        304
+      ],
+      "id": "84b901ae-a047-462a-a985-957433853791",
+      "name": "Get a file1",
+      "webhookId": "9a24e5b6-2e1d-4f2f-a7a4-77533c7fab4e",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "id"
+        },
+        "text": "Прочитай весь текст на картинке и коротко перескажи его по-русски. Если текста нет, опиши, что на фото",
+        "inputType": "base64",
+        "options": {
+          "maxTokens": 1500
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        528,
+        304
+      ],
+      "id": "58b44634-e45a-4f06-b8da-7e921e061630",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "PwtEWlXVaLTkKs3p",
+          "name": "OpenAI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json[1].content[0].text }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        768,
+        304
+      ],
+      "id": "49ef0ae7-d978-4b64-afbf-d75f2cf3e20f",
+      "name": "Send a text message3",
+      "webhookId": "2c55286d-e2f7-4de1-8747-f14fd044c32b",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        1024,
+        80
+      ],
+      "id": "feceeac6-69d2-4a42-b374-361f5d64386d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "delete",
+        "deleteMode": "all"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        848
+      ],
+      "id": "d608cf8b-8f80-4ca4-86ea-c01f4eb71923",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        1056
+      ],
+      "id": "4bbcf233-da19-4e0e-b363-775c36a05ef1",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "Контекст очищен. Начнем заново.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        848,
+        848
+      ],
+      "id": "ee0db7cf-3653-43a1-8391-28993fa794f2",
+      "name": "Send a text message4",
+      "webhookId": "a80d87b1-82a2-4c31-bb49-f1a27c9dc559",
+      "credentials": {
+        "telegramApi": {
+          "id": "4FKIUHYKaGgnDaj8",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Сделать: добавить кэш частых вопросов. Перед отправкой вопроса клиента в OpenAI проверять, был ли уже такой или похожий вопрос. Если да, брать готовый ответ из хранилища (NocoDB), не тратя токены. Если нет, идти в OpenAI как обычно и сохранять пару вопрос-ответ для следующего раза. Сравнивать не точный текст, а смысл вопроса (через embedding), так как клиенты формулируют по-разному. Экономия токенов и ускорение ответа на частые вопросы: адрес, цены, график работы.",
+        "width": 864
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1808,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "78641029-46e1-4f9f-80d8-622019279881",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Send a text message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager": {
+      "main": [
+        [
+          {
+            "node": "Send a text message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "3dc38478-50c2-42ab-96ee-60e36f193288",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "48e32e37d9b8d2ae280ec644e0a76d1156e63fcb61c5626816d628660ab97fe6"
+  },
+  "nodeGroups": [],
+  "id": "B7Zv0cPY14aEjsQi",
+  "tags": []
+}
